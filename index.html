@@ -1,0 +1,113 @@
+<html>
+  <body>
+    <h1>Prime, Antiprime, and Thoth Prime Calculator</h1>
+    <input type="number" id="n" placeholder="Enter a number">
+    <button onclick="calculate()">Calculate</button>
+    <table id="results">
+      <tr>
+        <th>Type</th>
+        <th>Preceding Prime</th>
+        <th>Calculated Value</th>
+        <th>Subsequent Prime</th>
+      </tr>
+      <tr id="prime-row">
+        <td>Prime</td>
+        <td id="prime-preceding"></td>
+        <td id="prime-calculated"></td>
+        <td id="prime-subsequent"></td>
+      </tr>
+      <tr id="antiprime-row">
+        <td>Antiprime</td>
+        <td id="antiprime-preceding"></td>
+        <td id="antiprime-calculated"></td>
+        <td id="antiprime-subsequent"></td>
+      </tr>
+      <tr id="thoth-prime-row">
+        <td>Thoth Prime</td>
+        <td id="thoth-prime-preceding"></td>
+        <td id="thoth-prime-calculated"></td>
+        <td id="thoth-prime-subsequent"></td>
+      </tr>
+    </table>
+
+    <script>
+      function calculate() {
+        const n = parseInt(document.getElementById("n").value);
+        const primeResult = calculatePrime(n);
+        const antiprimeResult = calculateAntiprime(n);
+        const thothPrimeResult = calculateThothPrime(n);
+
+        document.getElementById("prime-preceding").innerHTML = `<i>${getPrecedingPrime(primeResult)}</i>`;
+        document.getElementById("prime-calculated").innerHTML = primeResult;
+        document.getElementById("prime-subsequent").innerHTML = `<i>${getSubsequentPrime(primeResult)}</i>`;
+
+        document.getElementById("antiprime-preceding").innerHTML = `<i>${getPrecedingPrime(antiprimeResult)}</i>`;
+        document.getElementById("antiprime-calculated").innerHTML = antiprimeResult;
+        document.getElementById("antiprime-subsequent").innerHTML = `<i>${getSubsequentPrime(antiprimeResult)}</i>`;
+
+        document.getElementById("thoth-prime-preceding").innerHTML = `<i>${getPrecedingPrime(thothPrimeResult)}</i>`;
+        document.getElementById("thoth-prime-calculated").innerHTML = thothPrimeResult;
+        document.getElementById("thoth-prime-subsequent").innerHTML = `<i>${getSubsequentPrime(thothPrimeResult)}</i>`;
+      }
+
+      function calculatePrime(n) {
+        if (n <= 1) {
+          return "Not Prime";
+        }
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+          if (n % i === 0) {
+            return "Not Prime";
+          }
+        }
+        return n;
+      }
+
+      function calculateAntiprime(n) {
+        let factors = 0;
+        for (let i = 1; i <= n; i++) {
+          if (n % i === 0) {
+            factors++;
+          }
+        }
+        return factors > 2 ? n : "Not Antiprime";
+      }
+
+      function calculateThothPrime(n) {
+        const c = Math.E;
+        const p = Math.floor(c * Math.log(n));
+        return isPrime(p) ? p : "Not Thoth Prime";
+      }
+
+      function getPrecedingPrime(n) {
+        if (n <= 2) {
+          return "None";
+        }
+        n--;
+        while (!isPrime(n)) {
+          n--;
+        }
+        return n;
+      }
+
+      function getSubsequentPrime(n) {
+        n++;
+        while (!isPrime(n)) {
+          n++;
+        }
+        return n;
+      }
+
+      function isPrime(n) {
+        if (n <= 1) {
+          return false;
+        }
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+          if (n % i === 0) {
+            return false;
+          }
+        }
+        return true;
+      }
+    </script>
+  </body>
+</html>
